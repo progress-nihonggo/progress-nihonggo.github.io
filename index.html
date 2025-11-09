@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Belajar Bahasa Jepang - 441 Kanji</title>
+  <title>Belajar Bahasa Jepang - Dashboard Guru</title>
   <style>
     :root {
-      --w: 480px;
-      --h: 380px;
+      --w: 520px;
+      --h: 420px;
       --bg-primary: linear-gradient(135deg, #fef5f8, #ffe4f0);
       --card-front: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(252,240,245,0.98));
       --card-back: linear-gradient(180deg, #ec4899, #db2777);
@@ -16,54 +16,194 @@
       --shadow: 0 24px 60px rgba(236,72,153,0.12);
       --btn-bg: #fff;
       --btn-shadow: 0 6px 18px rgba(236,72,153,0.08);
+      --sidebar-bg: rgba(255,255,255,0.95);
+      --header-bg: rgba(255,255,255,0.98);
     }
     
     [data-theme="dark"] {
-      --bg-primary: linear-gradient(135deg, #1e1b4b, #312e81);
-      --card-front: linear-gradient(180deg, rgba(30,27,75,0.95), rgba(49,46,129,0.98));
+      --bg-primary: linear-gradient(135deg, #0f172a, #1e293b);
+      --card-front: linear-gradient(180deg, rgba(30,41,59,0.95), rgba(51,65,85,0.98));
       --card-back: linear-gradient(180deg, #6366f1, #4f46e5);
-      --text-primary: #e0e7ff;
-      --text-secondary: rgba(224,231,255,0.7);
+      --text-primary: #e2e8f0;
+      --text-secondary: rgba(226,232,240,0.7);
       --shadow: 0 24px 60px rgba(99,102,241,0.3);
-      --btn-bg: rgba(99,102,241,0.2);
-      --btn-shadow: 0 6px 18px rgba(99,102,241,0.3);
+      --btn-bg: rgba(51,65,85,0.8);
+      --btn-shadow: 0 6px 18px rgba(99,102,241,0.2);
+      --sidebar-bg: rgba(30,41,59,0.95);
+      --header-bg: rgba(30,41,59,0.98);
     }
     
     [data-theme="light"] {
-      --bg-primary: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-      --card-front: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(240,249,255,0.98));
+      --bg-primary: linear-gradient(135deg, #f8fafc, #e0f2fe);
+      --card-front: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));
       --card-back: linear-gradient(180deg, #0ea5e9, #0284c7);
       --text-primary: #0f172a;
       --text-secondary: rgba(15,23,42,0.7);
       --shadow: 0 24px 60px rgba(14,165,233,0.12);
       --btn-bg: #fff;
       --btn-shadow: 0 6px 18px rgba(14,165,233,0.08);
+      --sidebar-bg: rgba(255,255,255,0.95);
+      --header-bg: rgba(255,255,255,0.98);
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       font-family: 'Segoe UI', Inter, system-ui, -apple-system, Roboto, Arial, sans-serif;
       margin: 0;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
       background: var(--bg-primary);
-      transition: background 0.3s;
+      transition: background 0.4s ease;
+      color: var(--text-primary);
     }
 
-    .page {
+    /* Dashboard Layout */
+    .dashboard {
       display: none;
-      width: 100%;
-      max-width: 1200px;
-      animation: fadeIn 0.5s;
+      min-height: 100vh;
     }
 
-    .page.active {
+    .dashboard.active {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(0,0,0,0.05);
+      padding: 24px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      transition: all 0.4s ease;
+      z-index: 100;
+    }
+
+    .sidebar.minimized {
+      width: 80px;
+      padding: 24px 12px;
+    }
+
+    .sidebar.minimized .sidebar-header {
+      text-align: center;
+    }
+
+    .sidebar.minimized .sidebar-title,
+    .sidebar.minimized .sidebar-subtitle {
+      display: none;
+    }
+
+    .sidebar.minimized .nav-item span:not(.nav-icon) {
+      display: none;
+    }
+
+    .sidebar.minimized .nav-item {
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .sidebar-toggle {
+      position: absolute;
+      top: 20px;
+      right: -15px;
+      width: 30px;
+      height: 30px;
+      background: var(--btn-bg);
+      border: none;
+      border-radius: 50%;
+      box-shadow: var(--btn-shadow);
+      cursor: pointer;
+      display: flex;
       align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      z-index: 101;
+    }
+
+    .sidebar-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .sidebar-header {
+      padding-bottom: 20px;
+      border-bottom: 2px solid rgba(0,0,0,0.06);
+    }
+
+    .sidebar-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item:hover {
+      background: var(--btn-bg);
+      transform: translateX(4px);
+      box-shadow: var(--btn-shadow);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: white;
+      box-shadow: 0 4px 12px rgba(236,72,153,0.3);
+    }
+
+    [data-theme="dark"] .nav-item.active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+    }
+
+    [data-theme="light"] .nav-item.active {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    }
+
+    .nav-icon {
+      font-size: 20px;
+    }
+
+    .main-content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      animation: fadeIn 0.5s ease;
+      transition: margin-left 0.4s ease;
+    }
+
+    .main-content.expanded {
+      margin-left: 80px;
     }
 
     @keyframes fadeIn {
@@ -71,381 +211,385 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Welcome Screen */
-    .welcome-container {
+    /* Welcome Screen with Animation */
+    .welcome-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-screen.hidden {
+      display: none;
+    }
+
+    .welcome-content {
       text-align: center;
-      padding: 40px 20px;
+      padding: 40px;
+      animation: welcomeSlideUp 1s ease-out;
+      position: relative;
+      z-index: 2;
     }
 
-    .welcome-title {
-      font-size: clamp(32px, 6vw, 56px);
-      font-weight: 800;
-      color: var(--text-primary);
-      margin: 0 0 20px 0;
-      line-height: 1.2;
-    }
-
-    .welcome-subtitle {
-      font-size: clamp(16px, 3vw, 22px);
-      color: var(--text-secondary);
-      margin: 0 0 40px 0;
+    @keyframes welcomeSlideUp {
+      0% { opacity: 0; transform: translateY(60px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     .welcome-emoji {
-      font-size: clamp(80px, 15vw, 120px);
-      margin: 30px 0;
-      animation: bounce 2s infinite;
+      font-size: 120px;
+      animation: floatBounce 3s ease-in-out infinite;
+      display: inline-block;
     }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
+    @keyframes floatBounce {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(-5deg); }
+      75% { transform: translateY(-10px) rotate(5deg); }
     }
 
-    .btn-primary {
-      padding: 18px 48px;
-      font-size: 20px;
+    .welcome-title {
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 900;
+      color: var(--text-primary);
+      margin: 30px 0 20px 0;
+      line-height: 1.1;
+      animation: titleGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% { text-shadow: 0 0 20px rgba(236,72,153,0.3); }
+      50% { text-shadow: 0 0 40px rgba(236,72,153,0.5); }
+    }
+
+    .welcome-subtitle {
+      font-size: clamp(16px, 3vw, 24px);
+      color: var(--text-secondary);
+      margin: 0 0 50px 0;
+      animation: fadeInDelay 1s ease-out 0.5s both;
+    }
+
+    @keyframes fadeInDelay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .btn-start {
+      padding: 20px 60px;
+      font-size: 22px;
       font-weight: 700;
       background: linear-gradient(135deg, #ec4899, #db2777);
       color: white;
       border: none;
       border-radius: 16px;
       cursor: pointer;
-      box-shadow: 0 12px 32px rgba(236,72,153,0.3);
-      transition: all 0.3s;
+      box-shadow: 0 12px 32px rgba(236,72,153,0.4);
+      transition: all 0.4s ease;
+      animation: pulseScale 2s ease-in-out infinite;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(236,72,153,0.4);
+    @keyframes pulseScale {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
-    /* Menu Grid */
-    .menu-container {
+    .btn-start:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 20px 50px rgba(236,72,153,0.5);
+      animation: none;
+    }
+
+    /* Particle Background Animation */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      padding: 20px;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
     }
 
-    .menu-header {
-      text-align: center;
-      margin-bottom: 40px;
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgba(236,72,153,0.6), transparent);
+      border-radius: 50%;
+      animation: float 15s infinite ease-in-out;
     }
 
-    .menu-title {
-      font-size: clamp(28px, 5vw, 40px);
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+      50% { transform: translate(50px, -100px) scale(1.5); opacity: 0.3; }
+    }
+
+    /* Header */
+    .page-header {
+      background: var(--header-bg);
+      backdrop-filter: blur(10px);
+      padding: 24px 32px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 32px;
       font-weight: 800;
       color: var(--text-primary);
-      margin: 0 0 10px 0;
+      margin-bottom: 8px;
     }
 
-    .menu-grid {
+    .page-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--btn-bg);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--btn-shadow);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    .stat-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Shortcut Cards */
+    .shortcuts-section {
+      margin-top: 32px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .shortcuts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      max-width: 900px;
-      margin: 0 auto;
+      gap: 20px;
     }
 
-    .menu-card {
+    .shortcut-card {
       background: var(--btn-bg);
-      border-radius: 20px;
-      padding: 32px;
+      padding: 28px;
+      border-radius: 16px;
       box-shadow: var(--btn-shadow);
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      border: 2px solid transparent;
     }
 
-    .menu-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+    .shortcut-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+      border-color: var(--text-primary);
     }
 
-    .menu-card.disabled {
+    .shortcut-card.disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-    .menu-card.disabled:hover {
+    .shortcut-card.disabled:hover {
       transform: none;
+      border-color: transparent;
     }
 
-    .menu-icon {
-      font-size: 56px;
+    .shortcut-icon {
+      font-size: 48px;
       margin-bottom: 16px;
     }
 
-    .menu-card-title {
-      font-size: 22px;
+    .shortcut-title {
+      font-size: 20px;
       font-weight: 700;
       color: var(--text-primary);
-      margin: 0 0 8px 0;
+      margin-bottom: 8px;
     }
 
-    .menu-card-desc {
+    .shortcut-desc {
       font-size: 14px;
       color: var(--text-secondary);
-      margin: 0;
+      line-height: 1.5;
     }
 
-    .coming-soon-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
+    .badge-coming {
+      display: inline-block;
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: white;
       padding: 4px 12px;
       border-radius: 12px;
       font-size: 11px;
       font-weight: 700;
+      margin-top: 8px;
     }
 
-    .back-btn {
+    /* Theme Switcher - Fixed Position */
+    .theme-switcher {
       position: fixed;
-      top: 20px;
-      left: 20px;
-      padding: 10px 20px;
-      background: var(--btn-bg);
-      border: none;
-      border-radius: 12px;
-      box-shadow: var(--btn-shadow);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      z-index: 1000;
-      transition: all 0.3s;
-    }
-
-    .back-btn:hover {
-      transform: translateX(-4px);
-    }
-
-    /* Kanji List Page */
-    .list-container {
-      width: 100%;
-      padding: 20px;
-      margin-top: 60px;
-    }
-
-    .list-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .list-title {
-      font-size: clamp(24px, 4vw, 32px);
-      font-weight: 800;
-      color: var(--text-primary);
-      margin: 0 0 20px 0;
-    }
-
-    .level-tabs {
+      bottom: 24px;
+      right: 24px;
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-
-    .level-tab {
-      padding: 10px 20px;
+      z-index: 1000;
       background: var(--btn-bg);
-      border: 2px solid transparent;
+      padding: 8px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .theme-btn {
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
+      border: none;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      transition: all 0.3s;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      background: transparent;
     }
 
-    .level-tab:hover {
-      border-color: #ec4899;
+    .theme-btn:hover {
+      transform: scale(1.1);
+      background: rgba(0,0,0,0.05);
     }
 
-    .level-tab.active {
+    .theme-btn.active {
       background: linear-gradient(135deg, #ec4899, #db2777);
-      color: white;
-      border-color: transparent;
+      transform: scale(1.1);
     }
 
-    .kanji-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
+    [data-theme="dark"] .theme-btn.active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+    }
+
+    [data-theme="light"] .theme-btn.active {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    }
+
+    /* Flashcard Enhanced */
+    .flashcard-container {
       max-width: 1200px;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 200px);
+      justify-content: space-between;
     }
 
-    .kanji-item {
-      background: var(--btn-bg);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: var(--btn-shadow);
-      transition: all 0.3s;
-      text-align: center;
-    }
-
-    .kanji-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-    }
-
-    .kanji-char {
-      font-size: 48px;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin: 0 0 8px 0;
-    }
-
-    .kanji-furi {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin: 0 0 4px 0;
-    }
-
-    .kanji-meaning {
-      font-size: 16px;
-      color: var(--text-primary);
-      font-weight: 600;
-      margin: 0;
-    }
-
-    /* Flashcard Page (existing styles) */
-    header {
-      width: 100%;
-      max-width: 1000px;
-      margin-bottom: 20px;
-      text-align: center;
-      margin-top: 60px;
-    }
-    
-    h1 {
-      margin: 0 0 8px 0;
-      font-size: 26px;
-      color: var(--text-primary);
-      font-weight: 700;
-    }
-    
-    .subtitle {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
-
-    .loading {
-      text-align: center;
+    .flashcard-container.fullscreen-mode {
+      height: 100vh;
+      max-width: 100%;
       padding: 40px;
-      font-size: 18px;
-      color: var(--text-primary);
+      background: var(--bg-primary);
+      justify-content: center;
     }
 
-    .error {
-      background: #fee;
-      color: #c00;
-      padding: 20px;
-      border-radius: 12px;
-      margin: 20px;
-      text-align: center;
+    body.fullscreen-active {
+      overflow: hidden;
+    }
+
+    .fullscreen-mode .page-header {
+      display: none;
     }
 
     .controls-panel {
-      width: 100%;
-      max-width: 1000px;
-      margin-bottom: 20px;
+      background: var(--btn-bg);
+      padding: 20px 24px;
+      border-radius: 16px;
+      box-shadow: var(--btn-shadow);
+      margin-bottom: 24px;
       display: flex;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .control-group {
       display: flex;
       gap: 8px;
       align-items: center;
-      background: var(--btn-bg);
-      padding: 8px 14px;
-      border-radius: 12px;
-      box-shadow: var(--btn-shadow);
     }
 
     .control-group label {
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: 600;
       color: var(--text-primary);
-      font-weight: 500;
-      margin-right: 4px;
     }
 
-    select, button {
-      padding: 8px 14px;
+    select, .btn {
+      padding: 10px 18px;
       border-radius: 10px;
       border: none;
       background: var(--btn-bg);
       color: var(--text-primary);
       box-shadow: var(--btn-shadow);
       cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
-    button:hover, select:hover {
+    .btn:hover, select:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
 
-    button:active {
-      transform: translateY(0);
-    }
-
-    .mode-switch {
+    .card-stage {
       display: flex;
-      gap: 4px;
-      background: var(--btn-bg);
-      padding: 4px;
-      border-radius: 12px;
-      box-shadow: var(--btn-shadow);
-    }
-
-    .mode-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      background: transparent;
-      box-shadow: none;
-      transition: all 0.3s;
-    }
-
-    .mode-btn.active {
-      background: linear-gradient(135deg, #ec4899, #db2777);
-      color: white;
-      box-shadow: 0 4px 12px rgba(236,72,153,0.3);
-    }
-
-    [data-theme="dark"] .mode-btn.active {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-    }
-
-    [data-theme="light"] .mode-btn.active {
-      background: linear-gradient(135deg, #0ea5e9, #0284c7);
-    }
-
-    .stage {
-      width: 100%;
-      max-width: var(--w);
-      display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      gap: 16px;
+      flex: 1;
+      perspective: 1400px;
+      min-height: 400px;
     }
 
-    .scene {
+    .card-scene {
       width: var(--w);
       height: var(--h);
-      perspective: 1400px;
     }
 
     .card {
@@ -458,15 +602,15 @@
       cursor: pointer;
     }
 
-    .card.is-flipped {
+    .card.flipped {
       transform: rotateY(180deg);
     }
 
-    .face {
+    .card-face {
       position: absolute;
       inset: 0;
       border-radius: 20px;
-      padding: 30px;
+      padding: 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -477,685 +621,958 @@
       color: var(--text-primary);
     }
 
-    .face.back {
+    .card-face.back {
       transform: rotateY(180deg);
       background: var(--card-back);
       color: white;
     }
 
-    .kanji {
-      font-weight: 800;
+    .card-kanji {
+      font-weight: 900;
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       text-align: center;
+      word-wrap: break-word;
+      max-width: 100%;
     }
 
-    .furigana {
+    .card-furi {
       color: rgba(255,255,255,0.9);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       text-align: center;
     }
 
-    .meaning {
+    .card-meaning {
       color: rgba(255,255,255,0.95);
-      margin-top: 8px;
+      margin-top: 12px;
       text-align: center;
-      font-weight: 500;
-    }
-
-    .level-badge {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(255,255,255,0.3);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
       font-weight: 600;
-      transition: opacity 0.3s;
+      max-width: 90%;
+      word-wrap: break-word;
     }
 
-    .level-badge.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Floating Theme Switcher */
-    .theme-switcher {
-      position: fixed;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 999;
-    }
-
-    .theme-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      font-size: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transition: all 0.3s;
-      background: var(--btn-bg);
-      opacity: 0;
-      transform: scale(0);
-      pointer-events: none;
-    }
-
-    .theme-btn.show {
-      opacity: 1;
-      transform: scale(1);
-      pointer-events: all;
-    }
-
-    .theme-btn.main {
-      opacity: 1 !important;
-      transform: scale(1) !important;
-      pointer-events: all !important;
-    }
-
-    .theme-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-    }
-
-    .theme-btn.active {
-      box-shadow: 0 0 0 3px rgba(236,72,153,0.5);
-    }
-
-    [data-theme="dark"] .theme-btn.active {
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.5);
-    }
-
-    [data-theme="light"] .theme-btn.active {
-      box-shadow: 0 0 0 3px rgba(14,165,233,0.5);
-    }
-
-    /* Collapsible Control Panel */
-    .controls-wrapper {
-      width: 100%;
-      max-width: 1000px;
-      margin-bottom: 20px;
-    }
-
-    .controls-header {
-      background: var(--btn-bg);
-      padding: 12px 20px;
-      border-radius: 12px;
-      box-shadow: var(--btn-shadow);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      user-select: none;
-      transition: all 0.3s;
-    }
-
-    .controls-header:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    }
-
-    .controls-header-title {
-      font-weight: 600;
-      color: var(--text-primary);
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .controls-toggle {
-      font-size: 20px;
-      transition: transform 0.3s;
-    }
-
-    .controls-toggle.open {
-      transform: rotate(180deg);
-    }
-
-    .controls-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-    }
-
-    .controls-content.open {
-      max-height: 500px;
-      padding-top: 15px;
-    }
-
-    .controls-panel {
+    .card-controls {
       display: flex;
       gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .progress-info {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 16px 0;
+      flex-shrink: 0;
+    }
+
+    /* Kanji List Enhanced */
+    .level-tabs {
+      display: flex;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
+      margin-bottom: 32px;
     }
 
-    .icon-btn {
-      padding: 8px 12px;
+    .level-tab {
+      padding: 12px 24px;
       background: var(--btn-bg);
-      border: none;
-      border-radius: 10px;
+      border: 2px solid transparent;
+      border-radius: 12px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text-primary);
-      box-shadow: var(--btn-shadow);
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      transition: all 0.3s ease;
     }
 
-    .icon-btn:hover {
+    .level-tab:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      border-color: #ec4899;
     }
 
-    .icon-btn.active {
+    .level-tab.active {
       background: linear-gradient(135deg, #ec4899, #db2777);
       color: white;
+      border-color: transparent;
+      transform: translateY(-2px);
     }
 
-    [data-theme="dark"] .icon-btn.active {
+    [data-theme="dark"] .level-tab.active {
       background: linear-gradient(135deg, #6366f1, #4f46e5);
     }
 
-    [data-theme="light"] .icon-btn.active {
+    [data-theme="light"] .level-tab.active {
       background: linear-gradient(135deg, #0ea5e9, #0284c7);
     }
 
-    [data-font="default"] .kanji { font-size: clamp(48px, 8vw, 72px); }
-    [data-font="default"] .furigana { font-size: clamp(16px, 2.5vw, 22px); }
-    [data-font="default"] .meaning { font-size: clamp(18px, 3vw, 24px); }
-
-    [data-font="medium"] .kanji { font-size: clamp(60px, 10vw, 90px); }
-    [data-font="medium"] .furigana { font-size: clamp(20px, 3vw, 28px); }
-    [data-font="medium"] .meaning { font-size: clamp(22px, 3.5vw, 30px); }
-
-    [data-font="big"] .kanji { font-size: clamp(72px, 12vw, 108px); }
-    [data-font="big"] .furigana { font-size: clamp(24px, 3.5vw, 34px); }
-    [data-font="big"] .meaning { font-size: clamp(26px, 4vw, 36px); }
-
-    .controls-row {
-      display: flex;
-      gap: 10px;
-      width: 100%;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .pager {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .meta {
-      font-size: 14px;
-      color: var(--text-primary);
-      font-weight: 600;
-      min-width: 80px;
-      text-align: center;
-    }
-
-    .quiz-panel {
-      display: none;
-      width: 100%;
-      max-width: 600px;
-      background: var(--btn-bg);
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      margin-top: 20px;
-    }
-
-    .quiz-panel.active {
-      display: block;
-    }
-
-    .quiz-options {
+    .kanji-grid {
       display: grid;
-      gap: 10px;
-      margin-top: 15px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
     }
 
-    .quiz-option {
-      padding: 14px 18px;
-      border-radius: 10px;
+    .kanji-item {
       background: var(--btn-bg);
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: left;
-      font-size: 15px;
-      color: var(--text-primary);
-    }
-
-    .quiz-option:hover {
-      border-color: #ec4899;
-      transform: translateX(4px);
-    }
-
-    .quiz-option.correct {
-      background: #10b981;
-      color: white;
-      border-color: #10b981;
-    }
-
-    .quiz-option.wrong {
-      background: #ef4444;
-      color: white;
-      border-color: #ef4444;
-    }
-
-    .quiz-option:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .quiz-settings {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-
-    .quiz-settings label {
-      font-size: 14px;
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .quiz-settings input {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 2px solid var(--text-secondary);
-      background: transparent;
-      color: var(--text-primary);
-      font-size: 14px;
-      width: 80px;
-    }
-
-    .quiz-result {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--btn-shadow);
+      transition: all 0.3s ease;
       text-align: center;
+    }
+
+    .kanji-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    }
+
+    .kanji-char {
+      font-size: 56px;
+      font-weight: 900;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .kanji-furi {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .kanji-meaning {
+      font-size: 18px;
+      color: var(--text-primary);
       font-weight: 600;
+    }
+
+    .kanji-level {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+
+    /* Loading */
+    .loading-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-primary);
+      font-size: 24px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .loading-screen.hidden {
       display: none;
     }
 
-    .quiz-result.show {
-      display: block;
+    .error-box {
+      background: #fee;
+      color: #c00;
+      padding: 24px;
+      border-radius: 16px;
+      margin: 20px;
+      text-align: center;
+      max-width: 600px;
     }
 
-    @media (max-width: 560px) {
-      :root { --w: 92vw; --h: 70vw; }
-      h1 { font-size: 22px; }
-      .controls-panel { padding: 0 8px; }
-      .menu-grid { grid-template-columns: 1fr; }
-      .kanji-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar.minimized {
+        width: 280px;
+        padding: 24px;
+      }
+
+      .sidebar-toggle {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .main-content.expanded {
+        margin-left: 0;
+      }
+
+      .hamburger {
+        display: block;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 101;
+        background: var(--btn-bg);
+        border: none;
+        padding: 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      :root { --w: 90vw; --h: 60vw; }
+
+      .flashcard-container {
+        height: auto;
+      }
     }
+
+    @media (min-width: 769px) {
+      .hamburger {
+        display: none;
+      }
+    }
+
+    /* Font Sizes */
+    [data-font="default"] .card-kanji { font-size: clamp(56px, 10vw, 80px); }
+    [data-font="default"] .card-furi { font-size: clamp(18px, 3vw, 24px); }
+    [data-font="default"] .card-meaning { font-size: clamp(20px, 3.5vw, 28px); }
+
+    [data-font="medium"] .card-kanji { font-size: clamp(72px, 12vw, 100px); }
+    [data-font="medium"] .card-furi { font-size: clamp(22px, 3.5vw, 30px); }
+    [data-font="medium"] .card-meaning { font-size: clamp(24px, 4vw, 34px); }
+
+    [data-font="big"] .card-kanji { font-size: clamp(88px, 14vw, 120px); }
+    [data-font="big"] .card-furi { font-size: clamp(26px, 4vw, 36px); }
+    [data-font="big"] .card-meaning { font-size: clamp(28px, 4.5vw, 40px); }
   </style>
 </head>
 <body data-theme="sakura" data-font="default">
 
-  <!-- Floating Theme Switcher (Always Visible) -->
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    ⏳ Memuat data kanji...
+  </div>
+
+  <!-- Welcome Screen with Animation -->
+  <div id="welcomeScreen" class="welcome-screen hidden">
+    <div class="particles" id="particles"></div>
+    <div class="welcome-content">
+      <div class="welcome-emoji">🎌</div>
+      <h1 class="welcome-title">ようこそ</h1>
+      <p class="welcome-subtitle">Dashboard Pembelajaran Kanji Profesional<br>724 漢字 • 11 Level • 8期生 2025</p>
+      <button class="btn-start" onclick="startApp()">🚀 Mulai Belajar</button>
+    </div>
+  </div>
+
+  <!-- Hamburger Menu (Mobile) -->
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
+
+  <!-- Theme Switcher (Always Visible) -->
   <div class="theme-switcher" id="themeSwitcher">
-    <button class="theme-btn main" id="themeToggle" title="Ganti Tema">🎨</button>
-    <button class="theme-btn" data-theme="sakura" title="Tema Sakura">🌸</button>
+    <button class="theme-btn active" data-theme="sakura" title="Tema Sakura">🌸</button>
     <button class="theme-btn" data-theme="dark" title="Tema Dark">🌙</button>
     <button class="theme-btn" data-theme="light" title="Tema Light">☀️</button>
   </div>
 
-  <!-- Loading Screen -->
-  <div id="loadingScreen" class="loading">
-    ⏳ Memuat data kanji...
-  </div>
-
-  <!-- Welcome Page -->
-  <div id="welcomePage" class="page" style="display:none;">
-    <div class="welcome-container">
-      <div class="welcome-emoji">🎌</div>
-      <h1 class="welcome-title">ようこそ</h1>
-      <p class="welcome-subtitle">日本語学習サイト<br>441 漢字 • 9 レヴェル • かっこいい！• 8期生 2025</p>
-      <button class="btn-primary" onclick="showMenu()">🚀 始めましょう</button>
-    </div>
-  </div>
-
-  <!-- Menu Page -->
-  <div id="menuPage" class="page">
-    <div class="menu-container">
-      <div class="menu-header">
-        <h1 class="menu-title">📚 Pilih Menu Belajar</h1>
-        <p style="color: var(--text-secondary); margin: 0;">Pilih metode belajar yang sesuai dengan kebutuhanmu</p>
-      </div>
-
-      <div class="menu-grid">
-        <!-- Flashcard -->
-        <div class="menu-card" onclick="showFlashcard()">
-          <div class="menu-icon">🃏</div>
-          <h2 class="menu-card-title">Flashcard Kanji</h2>
-          <p class="menu-card-desc">Belajar dengan kartu interaktif + mode ujian</p>
-        </div>
-
-        <!-- Daftar Kanji -->
-        <div class="menu-card" onclick="showKanjiList()">
-          <div class="menu-icon">📋</div>
-          <h2 class="menu-card-title">Daftar Kanji</h2>
-          <p class="menu-card-desc">Lihat semua kanji berdasarkan level</p>
-        </div>
-
-        <!-- Modul Kotoba -->
-        <div class="menu-card disabled">
-          <span class="coming-soon-badge">COMING SOON</span>
-          <div class="menu-icon">📖</div>
-          <h2 class="menu-card-title">Modul Kotoba</h2>
-          <p class="menu-card-desc">Kosakata harian bahasa Jepang</p>
-        </div>
-
-        <!-- Modul Charenji -->
-        <div class="menu-card disabled">
-          <span class="coming-soon-badge">COMING SOON</span>
-          <div class="menu-icon">🎯</div>
-          <h2 class="menu-card-title">Modul Charenji</h2>
-          <p class="menu-card-desc">Tantangan & latihan intensif</p>
-        </div>
-
-        <!-- Modul Minna no Nihongo -->
-        <div class="menu-card disabled">
-          <span class="coming-soon-badge">COMING SOON</span>
-          <div class="menu-icon">📚</div>
-          <h2 class="menu-card-title">Minna no Nihongo</h2>
-          <p class="menu-card-desc">Materi lengkap per bab</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Kanji List Page -->
-  <div id="kanjiListPage" class="page">
-    <button class="back-btn" onclick="showMenu()">← Kembali</button>
-    <div class="list-container">
-      <div class="list-header">
-        <h1 class="list-title">📋 Daftar Kanji per Level</h1>
-        <p style="color: var(--text-secondary); margin: 0;">Total <strong id="totalKanjiCount">441</strong> Kanji</p>
-      </div>
-
-      <div class="level-tabs" id="levelTabs">
-        <button class="level-tab active" onclick="filterKanjiList('all')">Semua Level</button>
-        <button class="level-tab" onclick="filterKanjiList(1)">Level 1</button>
-        <button class="level-tab" onclick="filterKanjiList(2)">Level 2</button>
-        <button class="level-tab" onclick="filterKanjiList(3)">Level 3</button>
-        <button class="level-tab" onclick="filterKanjiList(4)">Level 4</button>
-        <button class="level-tab" onclick="filterKanjiList(5)">Level 5</button>
-        <button class="level-tab" onclick="filterKanjiList(6)">Level 6</button>
-        <button class="level-tab" onclick="filterKanjiList(7)">Level 7</button>
-        <button class="level-tab" onclick="filterKanjiList(8)">Level 8</button>
-        <button class="level-tab" onclick="filterKanjiList(9)">Level 9</button>
-        <button class="level-tab" onclick="filterKanjiList(10)">Level 10 - Anggono</button>
-      </div>
-
-      <div class="kanji-grid" id="kanjiGrid"></div>
-    </div>
-  </div>
-
-  <!-- Flashcard Page -->
-  <div id="flashcardPage" class="page">
-    <button class="back-btn" onclick="showMenu()">← Kembali</button>
-    
-    <header>
-      <h1>🃏 Flashcard Kanji - 441 Kata</h1>
-      <p class="subtitle">Belajar Kanji dengan mudah dan menyenangkan!</p>
-    </header>
-
-    <div class="controls-wrapper">
-      <div class="controls-header" id="controlsHeader">
-        <span class="controls-header-title">
-          ⚙️ Pengaturan
-        </span>
-        <span class="controls-toggle open" id="controlsToggle">▼</span>
-      </div>
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebarMinimize()">◀</button>
       
-      <div class="controls-content open" id="controlsContent">
-        <div class="controls-panel">
-          <div class="control-group">
-            <label>Ukuran Font:</label>
-            <select id="fontSelect">
-              <option value="default">Default</option>
-              <option value="medium">Medium</option>
-              <option value="big">Big</option>
-            </select>
-          </div>
+      <div class="sidebar-header">
+        <div class="sidebar-title">📚 Dashboard Guru</div>
+        <div class="sidebar-subtitle">Sistem Pembelajaran Kanji</div>
+      </div>
 
-          <div class="control-group">
-            <label>Filter Level:</label>
-            <select id="levelFilter">
-              <option value="all">Semua Level</option>
-              <option value="1">Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5</option>
-              <option value="6">Level 6</option>
-              <option value="7">Level 7</option>
-              <option value="8">Level 8</option>
-              <option value="9">Level 9</option>
-            </select>
-          </div>
+      <nav class="nav-menu">
+        <button class="nav-item active" onclick="showPage('overview')">
+          <span class="nav-icon">🏠</span>
+          <span>Ringkasan</span>
+        </button>
+        <button class="nav-item" onclick="showPage('flashcard')">
+          <span class="nav-icon">🃏</span>
+          <span>Flashcard</span>
+        </button>
+        <button class="nav-item" onclick="showPage('kanjilist')">
+          <span class="nav-icon">📋</span>
+          <span>Daftar Kanji</span>
+        </button>
+        <button class="nav-item" onclick="showPage('minna')">
+          <span class="nav-icon">📘</span>
+          <span>Minna no Nihongo</span>
+        </button>
+        <button class="nav-item" onclick="showPage('charenji')">
+          <span class="nav-icon">🎯</span>
+          <span>Modul Charenji</span>
+        </button>
+        <button class="nav-item" onclick="showPage('jft')">
+          <span class="nav-icon">📜</span>
+          <span>JFT Basic A2</span>
+        </button>
+        <button class="nav-item" onclick="showPage('about')">
+          <span class="nav-icon">ℹ️</span>
+          <span>Tentang</span>
+        </button>
+        <button class="nav-item" onclick="showPage('settings')">
+          <span class="nav-icon">⚙️</span>
+          <span>Pengaturan</span>
+        </button>
+      </nav>
+    </aside>
 
-          <div class="mode-switch">
-            <button class="mode-btn active" data-mode="normal">📖 Normal</button>
-            <button class="mode-btn" data-mode="quiz">✍️ Ujian</button>
-          </div>
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+      <!-- Overview Page -->
+      <div id="overviewPage" class="content-page active">
+        <div class="page-header">
+          <h1 class="page-title">📊 Ringkasan Pembelajaran</h1>
+          <p class="page-description">Dashboard monitoring pembelajaran kanji siswa</p>
+        </div>
 
-          <button class="icon-btn active" id="toggleLevelBtn" title="Show/Hide Level">
-            👁️ Level Badge
-          </button>
-          <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">
-            ⛶ Fullscreen
-          </button>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-value" id="totalKanji">724</div>
+            <div class="stat-label">Total Kanji</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-value">11</div>
+            <div class="stat-label">Level Tersedia</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">8期生</div>
+            <div class="stat-label">Angkatan</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Kelengkapan Data</div>
+          </div>
+        </div>
+
+        <div class="shortcuts-section">
+          <h2 class="section-title">🚀 Akses Cepat</h2>
+          <div class="shortcuts-grid">
+            <div class="shortcut-card" onclick="showPage('flashcard')">
+              <div class="shortcut-icon">🃏</div>
+              <div class="shortcut-title">Flashcard Kanji</div>
+              <p class="shortcut-desc">Latihan interaktif dengan sistem kartu bolak-balik untuk menghafal kanji</p>
+            </div>
+
+            <div class="shortcut-card" onclick="showPage('kanjilist')">
+              <div class="shortcut-icon">📋</div>
+              <div class="shortcut-title">Daftar Kanji</div>
+              <p class="shortcut-desc">Lihat seluruh daftar kanji yang tersedia berdasarkan level pembelajaran</p>
+            </div>
+
+            <div class="shortcut-card" onclick="showPage('minna')">
+              <div class="shortcut-icon">📘</div>
+              <div class="shortcut-title">Minna no Nihongo</div>
+              <p class="shortcut-desc">Materi pembelajaran lengkap dari buku Minna no Nihongo per bab</p>
+              <span class="badge-coming">COMING SOON</span>
+            </div>
+
+            <div class="shortcut-card" onclick="showPage('charenji')">
+              <div class="shortcut-icon">🎯</div>
+              <div class="shortcut-title">Modul Charenji</div>
+              <p class="shortcut-desc">Tantangan dan latihan soal intensif untuk meningkatkan kemampuan</p>
+              <span class="badge-coming">COMING SOON</span>
+            </div>
+
+            <div class="shortcut-card" onclick="showPage('jft')">
+              <div class="shortcut-icon">📜</div>
+              <div class="shortcut-title">JFT Basic A2</div>
+              <p class="shortcut-desc">Persiapan ujian JFT Basic level A2 untuk pekerja di Jepang</p>
+              <span class="badge-coming">COMING SOON</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="stage" id="normalMode">
-      <div class="scene">
-        <div class="card" id="card">
-          <div class="face front">
-            <div class="level-badge" id="levelBadgeFront">Lv 1</div>
-            <div class="kanji" id="frontKanji">—</div>
+      <!-- Flashcard Page -->
+      <div id="flashcardPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">🃏 Flashcard Interaktif</h1>
+          <p class="page-description">Mode pembelajaran dengan kartu interaktif</p>
+        </div>
+
+        <div class="flashcard-container" id="flashcardContainer">
+          <div class="controls-panel">
+            <div class="control-group">
+              <label>Ukuran:</label>
+              <select id="fontSelect">
+                <option value="default">Default</option>
+                <option value="medium">Medium</option>
+                <option value="big">Besar</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label>Level:</label>
+              <select id="levelFilter">
+                <option value="all">Semua</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+                <option value="5">Level 5</option>
+                <option value="6">Level 6</option>
+                <option value="7">Level 7</option>
+                <option value="8">Level 8</option>
+                <option value="9">Level 9</option>
+                <option value="10">Level 10</option>
+                <option value="11">Level 11</option>
+              </select>
+            </div>
+            <button class="btn" onclick="shuffleCards()">🎲 Acak</button>
+            <button class="btn" id="fullscreenToggle" onclick="toggleFullscreen()">⛶ Fullscreen</button>
           </div>
-          <div class="face back">
-            <div class="level-badge" id="levelBadgeBack">Lv 1</div>
-            <div class="kanji" id="backKanji">—</div>
-            <div class="furigana" id="backFuri">—</div>
-            <div class="meaning" id="backMeaning">—</div>
+
+          <div class="card-stage">
+            <div class="card-scene">
+              <div class="card" id="flashcard" onclick="flipCard()">
+                <div class="card-face front">
+                  <div class="card-kanji" id="frontKanji">一</div>
+                </div>
+                <div class="card-face back">
+                  <div class="card-kanji" id="backKanji">一</div>
+                  <div class="card-furi" id="backFuri">いち</div>
+                  <div class="card-meaning" id="backMeaning">Satu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress-info" id="progressInfo">1 / 724</div>
+
+          <div class="card-controls">
+            <button class="btn" onclick="prevCard()">← Sebelumnya</button>
+            <button class="btn" onclick="flipCard()">🔄 Balik</button>
+            <button class="btn" onclick="nextCard()">Selanjutnya →</button>
           </div>
         </div>
       </div>
 
-      <div class="controls-row">
-        <div class="pager">
-          <button id="prevBtn">← Prev</button>
-          <div class="meta" id="progress">0 / 0</div>
-          <button id="nextBtn">Next →</button>
+      <!-- Kanji List Page -->
+      <div id="kanjilistPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">📋 Daftar Lengkap Kanji</h1>
+          <p class="page-description">Semua kanji dikelompokkan berdasarkan level</p>
         </div>
-        <button id="flipBtn">🔄 Balik</button>
-        <button id="shuffleBtn">🎲 Acak</button>
-      </div>
-    </div>
 
-    <div class="quiz-panel" id="quizMode">
-      <div class="quiz-settings">
-        <button id="startQuizBtn">▶️ Mulai Ujian</button>
-        <button id="stopQuizBtn" style="display:none;">⏸️ Stop</button>
-      </div>
-      
-      <div style="margin-top:20px;">
-        <h2 style="margin:0 0 10px 0; font-size:20px; color: var(--text-primary);">Arti dari:</h2>
-        <div style="font-size:48px; font-weight:800; text-align:center; margin:20px 0; color: var(--text-primary);" id="quizKanji">—</div>
-        <div class="quiz-options" id="quizOptions"></div>
-        <div class="quiz-result" id="quizResult"></div>
+        <div class="level-tabs" id="levelTabs">
+          <button class="level-tab active" onclick="filterKanjiList('all')">Semua</button>
+          <button class="level-tab" onclick="filterKanjiList('1')">Level 1</button>
+          <button class="level-tab" onclick="filterKanjiList('2')">Level 2</button>
+          <button class="level-tab" onclick="filterKanjiList('3')">Level 3</button>
+          <button class="level-tab" onclick="filterKanjiList('4')">Level 4</button>
+          <button class="level-tab" onclick="filterKanjiList('5')">Level 5</button>
+          <button class="level-tab" onclick="filterKanjiList('6')">Level 6</button>
+          <button class="level-tab" onclick="filterKanjiList('7')">Level 7</button>
+          <button class="level-tab" onclick="filterKanjiList('8')">Level 8</button>
+          <button class="level-tab" onclick="filterKanjiList('9')">Level 9</button>
+          <button class="level-tab" onclick="filterKanjiList('10')">Level 10</button>
+          <button class="level-tab" onclick="filterKanjiList('11')">Level 11</button>
+        </div>
+
+        <div class="kanji-grid" id="kanjiGrid"></div>
       </div>
 
-      <div style="margin-top:20px; text-align:center; color: var(--text-primary);">
-        <strong>Skor: <span id="quizScore">0</span> / <span id="quizTotal">0</span></strong>
+      <!-- Settings Page -->
+      <div id="settingsPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">⚙️ Pengaturan</h1>
+          <p class="page-description">Konfigurasi sistem pembelajaran</p>
+        </div>
+
+        <div style="background: var(--btn-bg); padding: 32px; border-radius: 16px; box-shadow: var(--btn-shadow); max-width: 600px;">
+          <h3 style="margin-bottom: 20px; color: var(--text-primary);">Tema Aplikasi</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 20px;">Tema akan otomatis menyesuaikan waktu:</p>
+          <ul style="color: var(--text-secondary); margin-left: 20px; line-height: 1.8;">
+            <li>🌸 <strong>Sakura</strong> - Pagi (06:00 - 11:59)</li>
+            <li>☀️ <strong>Light</strong> - Siang (12:00 - 17:59)</li>
+            <li>🌙 <strong>Dark</strong> - Malam (18:00 - 05:59)</li>
+          </ul>
+          <p style="color: var(--text-secondary); margin-top: 20px; font-size: 14px;">
+            💡 Anda dapat mengubah tema manual dengan tombol di pojok kanan bawah
+          </p>
+        </div>
       </div>
-    </div>
+
+      <!-- Minna no Nihongo Page -->
+      <div id="minnaPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">📘 Minna no Nihongo</h1>
+          <p class="page-description">Materi pembelajaran per bab</p>
+        </div>
+        
+        <div style="background: var(--btn-bg); padding: 40px; border-radius: 16px; box-shadow: var(--btn-shadow); text-align: center; max-width: 600px; margin: 0 auto;">
+          <div style="font-size: 80px; margin-bottom: 20px;">📘</div>
+          <h2 style="color: var(--text-primary); margin-bottom: 16px;">Konten Segera Hadir</h2>
+          <p style="color: var(--text-secondary); line-height: 1.8;">
+            Modul Minna no Nihongo akan berisi materi pembelajaran lengkap per bab dengan latihan soal, vocabulary, dan grammar points.
+          </p>
+        </div>
+      </div>
+
+      <!-- Charenji Page -->
+      <div id="charenjiPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">🎯 Modul Charenji</h1>
+          <p class="page-description">Tantangan & latihan intensif</p>
+        </div>
+        
+        <div style="background: var(--btn-bg); padding: 40px; border-radius: 16px; box-shadow: var(--btn-shadow); text-align: center; max-width: 600px; margin: 0 auto;">
+          <div style="font-size: 80px; margin-bottom: 20px;">🎯</div>
+          <h2 style="color: var(--text-primary); margin-bottom: 16px;">Konten Segera Hadir</h2>
+          <p style="color: var(--text-secondary); line-height: 1.8;">
+            Modul Charenji akan berisi berbagai tantangan dan latihan soal intensif untuk meningkatkan kemampuan bahasa Jepang Anda.
+          </p>
+        </div>
+      </div>
+
+      <!-- JFT Basic A2 Page -->
+      <div id="jftPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">📜 JFT Basic A2</h1>
+          <p class="page-description">Persiapan ujian JFT Basic Level A2</p>
+        </div>
+        
+        <div style="background: var(--btn-bg); padding: 40px; border-radius: 16px; box-shadow: var(--btn-shadow); text-align: center; max-width: 600px; margin: 0 auto;">
+          <div style="font-size: 80px; margin-bottom: 20px;">📜</div>
+          <h2 style="color: var(--text-primary); margin-bottom: 16px;">Konten Segera Hadir</h2>
+          <p style="color: var(--text-secondary); line-height: 1.8;">
+            Modul JFT Basic A2 akan berisi materi persiapan lengkap untuk ujian Japanese Foundation Test level A2 yang dibutuhkan untuk bekerja di Jepang.
+          </p>
+        </div>
+      </div>
+
+      <!-- About Page -->
+      <div id="aboutPage" class="content-page" style="display:none;">
+        <div class="page-header">
+          <h1 class="page-title">ℹ️ Tentang</h1>
+          <p class="page-description">Informasi tentang Jepang, belajar, dan website ini</p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+          <!-- About Japan -->
+          <div style="background: var(--btn-bg); padding: 32px; border-radius: 16px; box-shadow: var(--btn-shadow); margin-bottom: 24px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 16px; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+              🇯🇵 Tentang Jepang
+            </h2>
+            <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px;">
+              Jepang (日本 Nihon/Nippon) adalah negara kepulauan di Asia Timur dengan populasi sekitar 125 juta jiwa. Negara ini terkenal dengan teknologi canggih, budaya tradisional yang kaya, serta sistem pendidikan dan kerja yang disiplin.
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+              <strong>Fakta Menarik:</strong><br>
+              • Bahasa resmi: Bahasa Jepang (日本語 Nihongo)<br>
+              • Ibu kota: Tokyo (東京)<br>
+              • Sistem penulisan: Hiragana (ひらがな), Katakana (カタカナ), dan Kanji (漢字)<br>
+              • Mata uang: Yen (円 en)
+            </p>
+          </div>
+
+          <!-- About Learning -->
+          <div style="background: var(--btn-bg); padding: 32px; border-radius: 16px; box-shadow: var(--btn-shadow); margin-bottom: 24px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 16px; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+              📚 Tentang Pembelajaran
+            </h2>
+            <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px;">
+              Website ini dirancang khusus untuk membantu pembelajaran bahasa Jepang, khususnya kanji, dengan metode yang sistematis dan interaktif. Kami menyediakan 724 kanji yang dikategorikan dalam 11 level pembelajaran.
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+              <strong>Metode Pembelajaran:</strong><br>
+              • <strong>Flashcard Interaktif</strong> - Sistem kartu bolak-balik untuk menghafal<br>
+              • <strong>Level Bertahap</strong> - Dari dasar hingga mahir (Level 1-11)<br>
+              • <strong>Audio Visual</strong> - Kanji dengan furigana dan artinya<br>
+              • <strong>Practice Makes Perfect</strong> - Latihan soal dan ujian
+            </p>
+          </div>
+
+          <!-- About Website -->
+          <div style="background: var(--btn-bg); padding: 32px; border-radius: 16px; box-shadow: var(--btn-shadow);">
+            <h2 style="color: var(--text-primary); margin-bottom: 16px; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+              💻 Tentang Website
+            </h2>
+            <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px;">
+              Dashboard Pembelajaran Kanji adalah platform edukasi online yang dikembangkan untuk mendukung guru dan siswa dalam proses belajar mengajar bahasa Jepang. Website ini menyediakan berbagai fitur pembelajaran yang komprehensif dan mudah digunakan.
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px;">
+              <strong>Fitur Unggulan:</strong><br>
+              • Dashboard profesional untuk monitoring pembelajaran<br>
+              • Flashcard interaktif dengan sistem spaced repetition<br>
+              • Daftar lengkap 724 kanji dengan kategorisasi level<br>
+              • Mode fullscreen untuk fokus belajar<br>
+              • Tema otomatis sesuai waktu (pagi, siang, malam)<br>
+              • Responsive design untuk semua perangkat
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+              <strong>Versi:</strong> 2.0 - Dashboard Edition<br>
+              <strong>Update Terakhir:</strong> 2025<br>
+              <strong>Untuk:</strong> 8期生 (Angkatan 8)
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 
   <script>
-    // Variables
+    // Dummy Data Kanji (fallback jika kanji.json tidak tersedia)
+    const DUMMY_KANJI = [
+      {kanji: "一", furi: "いち", meaning: "Satu", level: 1},
+      {kanji: "二", furi: "に", meaning: "Dua", level: 1},
+      {kanji: "三", furi: "さん", meaning: "Tiga", level: 1},
+      {kanji: "四", furi: "よん / し", meaning: "Empat", level: 1},
+      {kanji: "五", furi: "ご", meaning: "Lima", level: 1},
+      {kanji: "六", furi: "ろく", meaning: "Enam", level: 1},
+      {kanji: "七", furi: "なな / しち", meaning: "Tujuh", level: 1},
+      {kanji: "八", furi: "はち", meaning: "Delapan", level: 1},
+      {kanji: "九", furi: "きゅう / く", meaning: "Sembilan", level: 1},
+      {kanji: "十", furi: "じゅう", meaning: "Sepuluh", level: 1},
+      {kanji: "百", furi: "ひゃく", meaning: "Seratus", level: 2},
+      {kanji: "千", furi: "せん", meaning: "Seribu", level: 2},
+      {kanji: "万", furi: "まん", meaning: "Sepuluh ribu", level: 2},
+      {kanji: "円", furi: "えん", meaning: "Yen / Lingkaran", level: 2},
+      {kanji: "日", furi: "にち / ひ", meaning: "Hari / Matahari", level: 2},
+      {kanji: "月", furi: "がつ / つき", meaning: "Bulan", level: 2},
+      {kanji: "火", furi: "か / ひ", meaning: "Api", level: 3},
+      {kanji: "水", furi: "すい / みず", meaning: "Air", level: 3},
+      {kanji: "木", furi: "もく / き", meaning: "Kayu / Pohon", level: 3},
+      {kanji: "金", furi: "きん / かね", meaning: "Emas / Uang", level: 3},
+      {kanji: "土", furi: "ど / つち", meaning: "Tanah", level: 3},
+      {kanji: "人", furi: "じん / ひと", meaning: "Orang", level: 4},
+      {kanji: "本", furi: "ほん", meaning: "Buku / Asal", level: 4},
+      {kanji: "学", furi: "がく", meaning: "Belajar", level: 4},
+      {kanji: "生", furi: "せい", meaning: "Kehidupan / Lahir", level: 4},
+      {kanji: "先", furi: "せん", meaning: "Sebelum / Dahulu", level: 5},
+      {kanji: "年", furi: "ねん", meaning: "Tahun", level: 5},
+      {kanji: "分", furi: "ふん / ぶん", meaning: "Menit / Bagian", level: 5},
+      {kanji: "時", furi: "じ / とき", meaning: "Waktu / Jam", level: 5},
+      {kanji: "山", furi: "さん / やま", meaning: "Gunung", level: 6},
+      {kanji: "川", furi: "かわ", meaning: "Sungai", level: 6},
+      {kanji: "天", furi: "てん", meaning: "Langit / Surga", level: 6},
+      {kanji: "地", furi: "ち", meaning: "Bumi / Tanah", level: 6},
+      {kanji: "国", furi: "こく / くに", meaning: "Negara", level: 7},
+      {kanji: "語", furi: "ご", meaning: "Bahasa", level: 7},
+      {kanji: "文", furi: "ぶん", meaning: "Tulisan / Kalimat", level: 7},
+      {kanji: "字", furi: "じ", meaning: "Huruf / Karakter", level: 7},
+      {kanji: "食", furi: "しょく / た", meaning: "Makan", level: 8},
+      {kanji: "飲", furi: "いん / の", meaning: "Minum", level: 8},
+      {kanji: "買", furi: "か", meaning: "Membeli", level: 8},
+      {kanji: "売", furi: "う", meaning: "Menjual", level: 8},
+      {kanji: "見", furi: "けん / み", meaning: "Melihat", level: 9},
+      {kanji: "聞", furi: "ぶん / き", meaning: "Mendengar", level: 9},
+      {kanji: "読", furi: "どく / よ", meaning: "Membaca", level: 9},
+      {kanji: "書", furi: "しょ / か", meaning: "Menulis", level: 9},
+      {kanji: "話", furi: "わ / はな", meaning: "Berbicara", level: 10},
+      {kanji: "言", furi: "げん / い", meaning: "Berkata", level: 10},
+      {kanji: "行", furi: "こう / い", meaning: "Pergi", level: 10},
+      {kanji: "来", furi: "らい / く", meaning: "Datang", level: 10},
+      {kanji: "帰", furi: "き / かえ", meaning: "Pulang", level: 11},
+      {kanji: "入", furi: "にゅう / い", meaning: "Masuk", level: 11},
+      {kanji: "出", furi: "しゅつ / で", meaning: "Keluar", level: 11},
+      {kanji: "会", furi: "かい / あ", meaning: "Bertemu", level: 11}
+    ];
+
+    // Global Variables
     let allKanjiData = [];
     let filteredCards = [];
     let currentIndex = 0;
-    let quizScore = 0;
-    let quizTotal = 0;
-    let currentQuizQuestion = null;
-    let currentListLevel = 'all';
-    let showLevelBadge = true;
-    let themeExpanded = false;
+    let currentPage = 'overview';
+    let isFullscreen = false;
+    let isSidebarMinimized = false;
 
     // Elements
     const loadingScreen = document.getElementById('loadingScreen');
-    const welcomePage = document.getElementById('welcomePage');
-    const menuPage = document.getElementById('menuPage');
-    const kanjiListPage = document.getElementById('kanjiListPage');
-    const flashcardPage = document.getElementById('flashcardPage');
-    const themeSwitcher = document.getElementById('themeSwitcher');
-    const themeToggle = document.getElementById('themeToggle');
-    const fontSelect = document.getElementById('fontSelect');
-    const levelFilter = document.getElementById('levelFilter');
-    const controlsHeader = document.getElementById('controlsHeader');
-    const controlsToggle = document.getElementById('controlsToggle');
-    const controlsContent = document.getElementById('controlsContent');
-    const card = document.getElementById('card');
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const dashboard = document.getElementById('dashboard');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const mainContent = document.getElementById('mainContent');
+    const flashcard = document.getElementById('flashcard');
+    const flashcardContainer = document.getElementById('flashcardContainer');
+    const fullscreenToggle = document.getElementById('fullscreenToggle');
     const frontKanji = document.getElementById('frontKanji');
     const backKanji = document.getElementById('backKanji');
     const backFuri = document.getElementById('backFuri');
     const backMeaning = document.getElementById('backMeaning');
-    const levelBadgeFront = document.getElementById('levelBadgeFront');
-    const levelBadgeBack = document.getElementById('levelBadgeBack');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const flipBtn = document.getElementById('flipBtn');
-    const shuffleBtn = document.getElementById('shuffleBtn');
-    const progress = document.getElementById('progress');
-    const normalMode = document.getElementById('normalMode');
-    const quizMode = document.getElementById('quizMode');
-    const startQuizBtn = document.getElementById('startQuizBtn');
-    const stopQuizBtn = document.getElementById('stopQuizBtn');
-    const quizKanji = document.getElementById('quizKanji');
-    const quizOptions = document.getElementById('quizOptions');
-    const quizResult = document.getElementById('quizResult');
-    const quizScoreEl = document.getElementById('quizScore');
-    const quizTotalEl = document.getElementById('quizTotal');
+    const progressInfo = document.getElementById('progressInfo');
+    const fontSelect = document.getElementById('fontSelect');
+    const levelFilter = document.getElementById('levelFilter');
     const kanjiGrid = document.getElementById('kanjiGrid');
-    const totalKanjiCount = document.getElementById('totalKanjiCount');
-    const toggleLevelBtn = document.getElementById('toggleLevelBtn');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const totalKanjiEl = document.getElementById('totalKanji');
 
-    // Navigation Functions
-    function showPage(pageId) {
-      // Hide welcome page completely
-      welcomePage.style.display = 'none';
-      welcomePage.classList.remove('active');
+    // Auto Theme by Time
+    function setThemeByTime() {
+      const hour = new Date().getHours();
+      let theme = 'dark'; // default malam
       
-      // Hide all other pages
-      document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
+      if (hour >= 6 && hour < 12) {
+        theme = 'sakura'; // pagi
+      } else if (hour >= 12 && hour < 18) {
+        theme = 'light'; // siang
+      }
+      
+      applyTheme(theme);
+    }
+
+    // Apply Theme
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.theme === theme) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Theme Switcher
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyTheme(btn.dataset.theme);
+      });
+    });
+
+    // Create Particle Animation
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Start App
+    function startApp() {
+      welcomeScreen.classList.add('hidden');
+      dashboard.classList.add('active');
+    }
+
+    // Toggle Sidebar (Mobile)
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+    }
+
+    // Toggle Sidebar Minimize (Desktop)
+    function toggleSidebarMinimize() {
+      isSidebarMinimized = !isSidebarMinimized;
+      sidebar.classList.toggle('minimized');
+      mainContent.classList.toggle('expanded');
+      
+      if (isSidebarMinimized) {
+        sidebarToggle.textContent = '▶';
+        sidebarToggle.title = 'Maximize Sidebar';
+      } else {
+        sidebarToggle.textContent = '◀';
+        sidebarToggle.title = 'Minimize Sidebar';
+      }
+    }
+
+    // Toggle Fullscreen for Flashcard
+    function toggleFullscreen() {
+      isFullscreen = !isFullscreen;
+      
+      if (isFullscreen) {
+        flashcardContainer.classList.add('fullscreen-mode');
+        document.body.classList.add('fullscreen-active');
+        sidebar.style.display = 'none';
+        mainContent.style.marginLeft = '0';
+        fullscreenToggle.textContent = '⛶ Exit Fullscreen';
+        
+        // Request actual fullscreen
+        if (flashcardContainer.requestFullscreen) {
+          flashcardContainer.requestFullscreen();
+        } else if (flashcardContainer.webkitRequestFullscreen) {
+          flashcardContainer.webkitRequestFullscreen();
+        } else if (flashcardContainer.msRequestFullscreen) {
+          flashcardContainer.msRequestFullscreen();
+        }
+      } else {
+        exitFullscreenMode();
+      }
+    }
+
+    function exitFullscreenMode() {
+      isFullscreen = false;
+      flashcardContainer.classList.remove('fullscreen-mode');
+      document.body.classList.remove('fullscreen-active');
+      sidebar.style.display = 'flex';
+      mainContent.style.marginLeft = isSidebarMinimized ? '80px' : '280px';
+      fullscreenToggle.textContent = '⛶ Fullscreen';
+      
+      // Exit actual fullscreen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+
+    // Listen to fullscreen change events
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    function handleFullscreenChange() {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && 
+          !document.mozFullScreenElement && !document.msFullscreenElement) {
+        if (isFullscreen) {
+          exitFullscreenMode();
+        }
+      }
+    }
+
+    // Show Page
+    function showPage(page) {
+      currentPage = page;
+      
+      // Update nav items
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.target.closest('.nav-item').classList.add('active');
+      
+      // Hide all pages
+      document.querySelectorAll('.content-page').forEach(p => {
         p.style.display = 'none';
       });
       
       // Show selected page
-      const selectedPage = document.getElementById(pageId);
-      selectedPage.style.display = 'flex';
-      selectedPage.classList.add('active');
-    }
-
-    function showMenu() {
-      showPage('menuPage');
-      themeSwitcher.style.display = 'none';
-      stopQuiz();
-    }
-
-    function showFlashcard() {
-      showPage('flashcardPage');
-      themeSwitcher.style.display = 'flex';
-      render();
-    }
-
-    function showKanjiList() {
-      showPage('kanjiListPage');
-      themeSwitcher.style.display = 'none';
-      renderKanjiList('all');
-    }
-
-    // Load Kanji Data from JSON
-    async function loadKanjiData() {
-    console.log("🔍 Memulai loadKanjiData...");
-    try {
-      const response = await fetch("kanji.json", { cache: "no-cache" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-
-      const data = await response.json();
-      console.log("✅ Data JSON berhasil diambil:", data.length, "kanji");
-
-      if (!Array.isArray(data) || data.length === 0) {
-        throw new Error("Data kanji kosong atau format salah");
+      const pageMap = {
+        'overview': 'overviewPage',
+        'flashcard': 'flashcardPage',
+        'kanjilist': 'kanjilistPage',
+        'minna': 'minnaPage',
+        'charenji': 'charenjiPage',
+        'jft': 'jftPage',
+        'about': 'aboutPage',
+        'settings': 'settingsPage'
+      };
+      
+      const pageId = pageMap[page];
+      if (pageId) {
+        document.getElementById(pageId).style.display = 'block';
+        
+        // Exit fullscreen when changing pages
+        if (isFullscreen && page !== 'flashcard') {
+          exitFullscreenMode();
+        }
+        
+        if (page === 'flashcard') {
+          renderFlashcard();
+        } else if (page === 'kanjilist') {
+          renderKanjiList('all');
+        }
       }
-
-      allKanjiData = data;
-      filteredCards = [...allKanjiData];
-      totalKanjiCount.textContent = allKanjiData.length;
-
-      // Tampilkan halaman utama
-      loadingScreen.style.display = "none";
-      welcomePage.style.display = "flex";
-      welcomePage.classList.add("active");
-
-      console.log("🎉 Aplikasi siap digunakan!");
-    } catch (error) {
-      console.error("❌ Gagal memuat kanji.json:", error);
-      loadingScreen.innerHTML = `
-        <div class="error">
-          <h3>❌ Gagal Memuat Data Kanji</h3>
-          <p>Error: ${error.message}</p>
-          <p style="margin-top:15px; font-size:14px;">
-            <strong>Langkah perbaikan:</strong><br>
-            1️⃣ Pastikan file <code>kanji.json</code> ada di folder yang sama.<br>
-            2️⃣ Jalankan dengan local server (misal: <code>python -m http.server 8000</code>).<br>
-            3️⃣ Akses melalui <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>.<br>
-            4️⃣ Jika masih gagal, lihat console log (Ctrl+Shift+J).
-          </p>
-        </div>
-      `;
-
-      // Tambahkan fallback agar halaman tetap terbuka
-      welcomePage.style.display = "flex";
-      welcomePage.classList.add("active");
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+      }
     }
-  }
 
-  // Panggil fungsi saat halaman dimuat
-  document.addEventListener("DOMContentLoaded", loadKanjiData);
+    // Load Kanji Data
+    async function loadKanjiData() {
+      try {
+        const response = await fetch('kanji.json', { cache: 'no-cache' });
+        if (!response.ok) throw new Error('File tidak ditemukan');
+        
+        const data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error('Format data salah');
+        }
+        
+        allKanjiData = data;
+        console.log('✅ Data kanji berhasil dimuat:', allKanjiData.length, 'kanji');
+      } catch (error) {
+        console.warn('⚠️ Menggunakan data dummy:', error.message);
+        allKanjiData = DUMMY_KANJI;
+      }
+      
+      filteredCards = [...allKanjiData];
+      totalKanjiEl.textContent = allKanjiData.length;
+      
+      // Show welcome screen
+      loadingScreen.classList.add('hidden');
+      welcomeScreen.classList.remove('hidden');
+      createParticles();
+      setThemeByTime();
+    }
 
-  // Kanji List Functions
+    // Flashcard Functions
+    function renderFlashcard() {
+      if (!filteredCards.length) return;
+      
+      const card = filteredCards[currentIndex];
+      frontKanji.textContent = card.kanji;
+      backKanji.textContent = card.kanji;
+      backFuri.textContent = card.furi;
+      backMeaning.textContent = card.meaning;
+      progressInfo.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+      flashcard.classList.remove('flipped');
+    }
+
+    function flipCard() {
+      flashcard.classList.toggle('flipped');
+    }
+
+    function nextCard() {
+      if (!filteredCards.length) return;
+      currentIndex = (currentIndex + 1) % filteredCards.length;
+      renderFlashcard();
+    }
+
+    function prevCard() {
+      if (!filteredCards.length) return;
+      currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+      renderFlashcard();
+    }
+
+    function shuffleCards() {
+      filteredCards.sort(() => Math.random() - 0.5);
+      currentIndex = 0;
+      renderFlashcard();
+    }
+
+    // Font Size
+    fontSelect.addEventListener('change', (e) => {
+      document.body.setAttribute('data-font', e.target.value);
+    });
+
+    // Level Filter
+    levelFilter.addEventListener('change', (e) => {
+      const level = e.target.value;
+      if (level === 'all') {
+        filteredCards = [...allKanjiData];
+      } else {
+        filteredCards = allKanjiData.filter(k => k.level === parseInt(level));
+      }
+      currentIndex = 0;
+      renderFlashcard();
+    });
+
+    // Kanji List Functions
     function renderKanjiList(level) {
-      currentListLevel = level;
-      const filtered = level === 'all' ? allKanjiData : allKanjiData.filter(k => k.level === level);
+      const filtered = level === 'all' 
+        ? allKanjiData 
+        : allKanjiData.filter(k => k.level === parseInt(level));
       
       kanjiGrid.innerHTML = '';
       
@@ -1171,298 +1588,43 @@
           <div class="kanji-char">${kanji.kanji}</div>
           <div class="kanji-furi">${kanji.furi}</div>
           <div class="kanji-meaning">${kanji.meaning}</div>
-          <div style="margin-top:8px; font-size:11px; color:var(--text-secondary); font-weight:600;">Level ${kanji.level}</div>
+          <div class="kanji-level">Level ${kanji.level}</div>
         `;
         kanjiGrid.appendChild(item);
       });
-
-      // Update active tab
-      document.querySelectorAll('.level-tab').forEach(tab => tab.classList.remove('active'));
-      event.target.classList.add('active');
     }
 
     function filterKanjiList(level) {
       renderKanjiList(level);
       
-      // Update tab active state
+      // Update active tab
       document.querySelectorAll('.level-tab').forEach(tab => {
         tab.classList.remove('active');
       });
       event.target.classList.add('active');
     }
 
-    // Flashcard Functions
-    function render() {
-      if (!filteredCards.length) {
-        frontKanji.textContent = '—';
-        backKanji.textContent = '—';
-        backFuri.textContent = '—';
-        backMeaning.textContent = '—';
-        levelBadgeFront.textContent = '—';
-        levelBadgeBack.textContent = '—';
-        progress.textContent = '0 / 0';
-        return;
-      }
-
-      const c = filteredCards[currentIndex];
-      frontKanji.textContent = c.kanji;
-      backKanji.textContent = c.kanji;
-      backFuri.textContent = c.furi;
-      backMeaning.textContent = c.meaning;
-      levelBadgeFront.textContent = `Lv ${c.level}`;
-      levelBadgeBack.textContent = `Lv ${c.level}`;
-      progress.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
-      card.classList.remove('is-flipped');
-    }
-
-    function next() {
-      if (!filteredCards.length) return;
-      currentIndex = (currentIndex + 1) % filteredCards.length;
-      render();
-    }
-
-    function prev() {
-      if (!filteredCards.length) return;
-      currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
-      render();
-    }
-
-    function flip() {
-      if (!filteredCards.length) return;
-      card.classList.toggle('is-flipped');
-    }
-
-    function shuffle() {
-      if (!filteredCards.length) return;
-      filteredCards.sort(() => Math.random() - 0.5);
-      currentIndex = 0;
-      render();
-    }
-
-    // Theme & Font
-    fontSelect.addEventListener('change', (e) => {
-      document.body.setAttribute('data-font', e.target.value);
-    });
-
-    // Collapsible Controls
-    controlsHeader.addEventListener('click', () => {
-      const isOpen = controlsContent.classList.toggle('open');
-      controlsToggle.classList.toggle('open');
-    });
-
-    // Floating Theme Switcher Toggle
-    themeToggle.addEventListener('click', () => {
-      themeExpanded = !themeExpanded;
-      const themeButtons = document.querySelectorAll('.theme-btn:not(.main)');
-      
-      if (themeExpanded) {
-        themeButtons.forEach(btn => btn.classList.add('show'));
-      } else {
-        themeButtons.forEach(btn => btn.classList.remove('show'));
-      }
-    });
-
-    // Floating Theme Switcher Selection
-    document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const theme = btn.dataset.theme;
-        changeTheme(theme);
-        
-        // Close theme menu
-        themeExpanded = false;
-        document.querySelectorAll('.theme-btn:not(.main)').forEach(b => b.classList.remove('show'));
-        
-        // Update main button icon
-        themeToggle.textContent = btn.textContent;
-      });
-    });
-
-    function changeTheme(theme) {
-      document.body.setAttribute('data-theme', theme);
-      
-      // Update active button
-      document.querySelectorAll('.theme-btn[data-theme]').forEach(b => b.classList.remove('active'));
-      document.querySelector(`.theme-btn[data-theme="${theme}"]`).classList.add('active');
-    }
-
-    // Close theme menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!themeSwitcher.contains(e.target) && themeExpanded) {
-        themeExpanded = false;
-        document.querySelectorAll('.theme-btn:not(.main)').forEach(btn => btn.classList.remove('show'));
-      }
-    });
-
-    // Toggle Level Badge
-    toggleLevelBtn.addEventListener('click', () => {
-      showLevelBadge = !showLevelBadge;
-      toggleLevelBtn.classList.toggle('active');
-      
-      if (showLevelBadge) {
-        levelBadgeFront.classList.remove('hidden');
-        levelBadgeBack.classList.remove('hidden');
-        toggleLevelBtn.innerHTML = '👁️ Level Badge';
-      } else {
-        levelBadgeFront.classList.add('hidden');
-        levelBadgeBack.classList.add('hidden');
-        toggleLevelBtn.innerHTML = '👁️‍🗨️ Level Badge';
-      }
-    });
-
-    // Fullscreen
-    fullscreenBtn.addEventListener('click', async () => {
-      try {
-        if (!document.fullscreenElement) {
-          await document.documentElement.requestFullscreen();
-          fullscreenBtn.innerHTML = '⛶ Exit Fullscreen';
-        } else {
-          await document.exitFullscreen();
-          fullscreenBtn.innerHTML = '⛶ Fullscreen';
-        }
-      } catch (err) {
-        console.error('Fullscreen error:', err);
-      }
-    });
-
-    // Listen to fullscreen changes
-    document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement) {
-        fullscreenBtn.innerHTML = '⛶ Fullscreen';
-      }
-    });
-
-    // Level Filter
-    levelFilter.addEventListener('change', (e) => {
-      const level = e.target.value;
-      if (level === 'all') {
-        filteredCards = [...allKanjiData];
-      } else {
-        filteredCards = allKanjiData.filter(k => k.level === parseInt(level));
-      }
-      currentIndex = 0;
-      render();
-    });
-
-    // Mode Switch
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const mode = btn.dataset.mode;
-        if (mode === 'normal') {
-          normalMode.style.display = 'flex';
-          quizMode.classList.remove('active');
-          stopQuiz();
-        } else {
-          normalMode.style.display = 'none';
-          quizMode.classList.add('active');
-        }
-      });
-    });
-
-        // Quiz Mode
-    function startQuiz() {
-      if (!filteredCards.length) return;
-      quizScore = 0;
-      quizTotal = 0;
-      quizScoreEl.textContent = '0';
-      quizTotalEl.textContent = '0';
-      startQuizBtn.style.display = 'none';
-      stopQuizBtn.style.display = 'inline-block';
-      generateQuizQuestion();
-    }
-
-    function stopQuiz() {
-      startQuizBtn.style.display = 'inline-block';
-      stopQuizBtn.style.display = 'none';
-      quizResult.classList.remove('show');
-    }
-
-    function generateQuizQuestion() {
-      if (!filteredCards.length) return;
-      quizResult.classList.remove('show');
-
-      const randomIndex = Math.floor(Math.random() * filteredCards.length);
-      currentQuizQuestion = filteredCards[randomIndex];
-      quizKanji.textContent = currentQuizQuestion.kanji;
-
-      const correctAnswer = currentQuizQuestion.meaning;
-      const wrongAnswers = [];
-
-      while (wrongAnswers.length < 3) {
-        const randomKanji = filteredCards[Math.floor(Math.random() * filteredCards.length)];
-        if (randomKanji.meaning !== correctAnswer && !wrongAnswers.includes(randomKanji.meaning)) {
-          wrongAnswers.push(randomKanji.meaning);
-        }
-      }
-
-      const allOptions = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
-      quizOptions.innerHTML = '';
-      allOptions.forEach(option => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-option';
-        btn.textContent = option;
-        btn.onclick = () => checkAnswer(option, correctAnswer);
-        quizOptions.appendChild(btn);
-      });
-    }
-
-    function checkAnswer(selected, correct) {
-      quizTotal++;
-      quizTotalEl.textContent = quizTotal;
-
-      const buttons = quizOptions.querySelectorAll('.quiz-option');
-      buttons.forEach(btn => {
-        btn.disabled = true;
-        if (btn.textContent === correct) btn.classList.add('correct');
-        if (btn.textContent === selected && selected !== correct) btn.classList.add('wrong');
-      });
-
-      if (selected === correct) {
-        quizScore++;
-        quizScoreEl.textContent = quizScore;
-        quizResult.textContent = '✅ Benar!';
-        quizResult.style.background = '#d1fae5';
-        quizResult.style.color = '#065f46';
-      } else {
-        quizResult.textContent = `❌ Salah! Jawaban: ${correct}`;
-        quizResult.style.background = '#fee2e2';
-        quizResult.style.color = '#991b1b';
-      }
-
-      quizResult.classList.add('show');
-
-      // Auto next after 2 seconds
-      setTimeout(() => {
-        if (stopQuizBtn.style.display !== 'none') generateQuizQuestion();
-      }, 2000);
-    }
-
-    // Event Listeners
-    nextBtn.onclick = next;
-    prevBtn.onclick = prev;
-    flipBtn.onclick = flip;
-    shuffleBtn.onclick = shuffle;
-    card.onclick = flip;
-    startQuizBtn.onclick = startQuiz;
-    stopQuizBtn.onclick = stopQuiz;
-
-    // Keyboard shortcuts
-    document.onkeydown = (e) => {
-      if (flashcardPage.classList.contains('active')) {
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (currentPage === 'flashcard') {
         if (e.code === 'Space') {
           e.preventDefault();
-          flip();
+          flipCard();
         }
-        if (e.key === 'ArrowRight') next();
-        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') nextCard();
+        if (e.key === 'ArrowLeft') prevCard();
+        if (e.key === 'f' || e.key === 'F') {
+          e.preventDefault();
+          toggleFullscreen();
+        }
+        if (e.key === 'Escape' && isFullscreen) {
+          exitFullscreenMode();
+        }
       }
-    };
+    });
 
     // Initialize
     loadKanjiData();
   </script>
 </body>
-
 </html>
