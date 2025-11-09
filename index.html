@@ -1441,52 +1441,55 @@
 
     // Show Page
     function showPage(page) {
-      currentPage = page;
-      
-      // Update nav items
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      event.target.closest('.nav-item').classList.add('active');
-      
-      // Hide all pages
-      document.querySelectorAll('.content-page').forEach(p => {
-        p.style.display = 'none';
-      });
-      
-      // Show selected page
-      const pageMap = {
-        'overview': 'overviewPage',
-        'flashcard': 'flashcardPage',
-        'kanjilist': 'kanjilistPage',
-        'minna': 'minnaPage',
-        'charenji': 'charenjiPage',
-        'jft': 'jftPage',
-        'about': 'aboutPage',
-        'settings': 'settingsPage'
-      };
-      
-      const pageId = pageMap[page];
-      if (pageId) {
-        document.getElementById(pageId).style.display = 'block';
-        
-        // Exit fullscreen when changing pages
-        if (isFullscreen && page !== 'flashcard') {
-          exitFullscreenMode();
-        }
-        
-        if (page === 'flashcard') {
-          renderFlashcard();
-        } else if (page === 'kanjilist') {
-          renderKanjiList('all');
-        }
-      }
-      
-      // Close sidebar on mobile
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('open');
-      }
-    }
+		currentPage = page;
+
+		// Update nav items (highlight menu aktif di sidebar)
+		document.querySelectorAll('.nav-item').forEach(item => {
+			item.classList.remove('active');
+			if (item.getAttribute('onclick') === `showPage('${page}')`) {
+			item.classList.add('active');
+			}
+		});
+
+		// Sembunyikan semua halaman
+		document.querySelectorAll('.content-page').forEach(p => {
+			p.style.display = 'none';
+		});
+
+	  // Tampilkan halaman sesuai parameter
+		const pageMap = {
+			'overview': 'overviewPage',
+			'flashcard': 'flashcardPage',
+			'kanjilist': 'kanjilistPage',
+			'minna': 'minnaPage',
+			'charenji': 'charenjiPage',
+			'jft': 'jftPage',
+			'about': 'aboutPage',
+			'settings': 'settingsPage'
+		};
+
+		const pageId = pageMap[page];
+		if (pageId) {
+			document.getElementById(pageId).style.display = 'block';
+
+			// Keluar fullscreen jika pindah halaman selain flashcard
+			if (isFullscreen && page !== 'flashcard') {
+			exitFullscreenMode();
+			}
+
+			if (page === 'flashcard') {
+			renderFlashcard();
+			} else if (page === 'kanjilist') {
+			renderKanjiList('all');
+			}
+		}
+
+		// Tutup sidebar otomatis jika di mobile
+		if (window.innerWidth <= 768) {
+			sidebar.classList.remove('open');
+		}
+	}
+
 
     // Load Kanji Data
     async function loadKanjiData() {
