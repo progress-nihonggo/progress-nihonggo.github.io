@@ -3086,4 +3086,515 @@
     "index": 441,
     "level": 9
   }
+  {
+    "kanji": "結果",
+    "furi": "けっか",
+    "meaning": "Hasil",
+    "index": 1,
+    "level": 10
+  },
+  {
+    "kanji": "成績",
+    "furi": "せいせき",
+    "meaning": "Nilai, Prestasi",
+    "index": 2,
+    "level": 10
+  },
+  {
+    "kanji": "比べる",
+    "furi": "くらべる",
+    "meaning": "Membandingkan",
+    "index": 3,
+    "level": 10
+  },
+  {
+    "kanji": "行列",
+    "furi": "ぎょうれつ",
+    "meaning": "Antrean, Barisan",
+    "index": 4,
+    "level": 10
+  },
+  {
+    "kanji": "拾う",
+    "furi": "ひろう",
+    "meaning": "Memungut",
+    "index": 5,
+    "level": 10
+  },
+  {
+    "kanji": "流す",
+    "furi": "ながす",
+    "meaning": "Mengalirkan, Menghanyutkan, Menyiram",
+    "index": 6,
+    "level": 10
+  },
+  {
+    "kanji": "投げる",
+    "furi": "なげる",
+    "meaning": "Melempar",
+    "index": 7,
+    "level": 10
+  },
+  {
+    "kanji": "都会",
+    "furi": "とかい",
+    "meaning": "Kota besar, Metropolitan",
+    "index": 8,
+    "level": 10
+  },
+  {
+    "kanji": "小鳥",
+    "furi": "ことり",
+    "meaning": "Burung kecil",
+    "index": 9,
+    "level": 10
+  },
+  {
+    "kanji": "世話",
+    "furi": "せわ",
+    "meaning": "Perawatan, Bantuan",
+    "index": 10,
+    "level": 10
+  },
+  {
+    "kanji": "通う",
+    "furi": "かよう",
+    "meaning": "Bolak-balik, Berangkat/Pulang (rutin)",
+    "index": 11,
+    "level": 10
+  },
+  {
+    "kanji": "風邪",
+    "furi": "かぜ",
+    "meaning": "Flu, Masuk angin",
+    "index": 12,
+    "level": 10
+  },
+  {
+    "kanji": "温かい",
+    "furi": "あたたかい",
+    "meaning": "Hangat",
+    "index": 13,
+    "level": 10
+  },
+  {
+    "kanji": "高原",
+    "furi": "こうげん",
+    "meaning": "Dataran tinggi",
+    "index": 14,
+    "level": 10
+  },
+  {
+    "kanji": "畑",
+    "furi": "はたけ",
+    "meaning": "Ladang",
+    "index": 15,
+    "level": 10
+  },
+  {
+    "kanji": "のんびり",
+    "furi": "のんびり",
+    "meaning": "Santai, Dengan tenang",
+    "index": 16,
+    "level": 10
+  },
+  {
+    "kanji": "なるほど",
+    "furi": "なるほど",
+    "meaning": "Benar juga, Oh begitu",
+    "index": 17,
+    "level": 10
+  },
+  {
+    "kanji": "アレルギー",
+    "furi": "アレルギー",
+    "meaning": "Alergi",
+    "index": 18,
+    "level": 10
+  },
+  {
+    "kanji": "途中に",
+    "furi": "とちゅうに",
+    "meaning": "Di tengah jalan, Di tengah perjalanan",
+    "index": 19,
+    "level": 10
+  },
+  {
+    "kanji": "ソファ",
+    "furi": "ソファ",
+    "meaning": "Sofa",
+    "index": 20,
+    "level": 10
+  },
+  {
+    "kanji": "救急車",
+    "furi": "きゅうきゅうしゃ",
+    "meaning": "Ambulans",
+    "index": 21,
+    "level": 10
+  },
+  {
+    "kanji": "レシート",
+    "furi": "レシート",
+    "meaning": "Resi, Struk",
+    "index": 22,
+    "level": 10
+  },
+  {
+    "kanji": "スタンプ",
+    "furi": "スタンプ",
+    "meaning": "Stempel, Cap",
+    "index": 23,
+    "level": 10
+  },
+  {
+    "kanji": "次回",
+    "furi": "じかい",
+    "meaning": "Lain kali, Waktu berikutnya",
+    "index": 24,
+    "level": 10
+  },
+  {
+    "kanji": "行き",
+    "furi": "いき",
+    "meaning": "Keberangkatan, Tujuan",
+    "index": 25,
+    "level": 10
+  },
+  {
+    "kanji": "約",
+    "furi": "やく",
+    "meaning": "Kira-kira, Kurang lebih",
+    "index": 26,
+    "level": 10
+  },
+  {
+    "kanji": "ご利用",
+    "furi": "ごりよう",
+    "meaning": "Penggunaan (bentuk sopan)",
+    "index": 27,
+    "level": 10
+  },
+  {
+    "kanji": "迷惑",
+    "furi": "めいわく",
+    "meaning": "Masalah, Gangguan",
+    "index": 28,
+    "level": 10
+  },
+  {
+    "kanji": "アナウンス",
+    "furi": "アナウンス",
+    "meaning": "Pengumuman",
+    "index": 29,
+    "level": 10
+  },
+  {
+    "kanji": "太い",
+    "furi": "ふとい",
+    "meaning": "Gemuk, Tebal",
+    "index": 30,
+    "level": 10
+  },
+  {
+    "kanji": "簡単",
+    "furi": "かんたん",
+    "meaning": "Mudah, Sederhana",
+    "index": 31,
+    "level": 10
+  },
+  {
+    "kanji": "しっぽ",
+    "furi": "しっぽ",
+    "meaning": "Ekor",
+    "index": 32,
+    "level": 10
+  },
+  {
+    "kanji": "注意",
+    "furi": "ちゅうい",
+    "meaning": "Perhatian, Berhati-hati",
+    "index": 33,
+    "level": 10
+  },
+  {
+    "kanji": "紅葉",
+    "furi": "こうよう",
+    "meaning": "Daun-daun yang berubah merah/kuning di musim gugur",
+    "index": 34,
+    "level": 10
+  },
+  {
+    "kanji": "涼しい",
+    "furi": "すずしい",
+    "meaning": "Sejuk",
+    "index": 35,
+    "level": 10
+  },
+  {
+    "kanji": "連休",
+    "furi": "れんきゅう",
+    "meaning": "Liburan panjang/berderet",
+    "index": 36,
+    "level": 10
+  },
+  {
+    "kanji": "二泊",
+    "furi": "にはく",
+    "meaning": "Menginap dua malam",
+    "index": 37,
+    "level": 10
+  },
+  {
+    "kanji": "僕は",
+    "furi": "ぼくは",
+    "meaning": "Saya (laki-laki, informal)",
+    "index": 38,
+    "level": 10
+  },
+  {
+    "kanji": "退院",
+    "furi": "たいいん",
+    "meaning": "Keluar dari rumah sakit",
+    "index": 39,
+    "level": 10
+  },
+  {
+    "kanji": "強い",
+    "furi": "つよい",
+    "meaning": "Kuat",
+    "index": 40,
+    "level": 10
+  },
+  {
+    "kanji": "えさ",
+    "furi": "えさ",
+    "meaning": "Makanan ternak/hewan, Umpan",
+    "index": 41,
+    "level": 10
+  },
+  {
+    "kanji": "嫌い",
+    "furi": "きらい",
+    "meaning": "Benci, Tidak suka",
+    "index": 42,
+    "level": 10
+  },
+  {
+    "kanji": "安心",
+    "furi": "あんしん",
+    "meaning": "Tenang, Lega",
+    "index": 43,
+    "level": 10
+  },
+  {
+    "kanji": "不安",
+    "furi": "ふあん",
+    "meaning": "Cemas, Gelisah",
+    "index": 44,
+    "level": 10
+  },
+  {
+    "kanji": "一生",
+    "furi": "いっしょう",
+    "meaning": "Seumur hidup",
+    "index": 45,
+    "level": 10
+  },
+  {
+    "kanji": "美容師",
+    "furi": "びようし",
+    "meaning": "Penata rambut",
+    "index": 46,
+    "level": 10
+  },
+  {
+    "kanji": "天気予報",
+    "furi": "てんきよほう",
+    "meaning": "Ramalan cuaca",
+    "index": 47,
+    "level": 10
+  },
+  {
+    "kanji": "猫",
+    "furi": "ねこ",
+    "meaning": "Kucing",
+    "index": 48,
+    "level": 10
+  },
+  {
+    "kanji": "早退",
+    "furi": "そうたい",
+    "meaning": "Pulang lebih awal",
+    "index": 49,
+    "level": 10
+  },
+  {
+    "kanji": "げり",
+    "furi": "げり",
+    "meaning": "Diare",
+    "index": 50,
+    "level": 10
+  },
+  {
+    "kanji": "はきけ",
+    "furi": "はきけ",
+    "meaning": "Mual",
+    "index": 51,
+    "level": 10
+  },
+  {
+    "kanji": "嘔吐",
+    "furi": "おうと",
+    "meaning": "Muntah",
+    "index": 52,
+    "level": 10
+  },
+  {
+    "kanji": "撫でる",
+    "furi": "なでる",
+    "meaning": "Mengelus",
+    "index": 53,
+    "level": 10
+  },
+  {
+    "kanji": "工場",
+    "furi": "こうじょう",
+    "meaning": "Pabrik",
+    "index": 54,
+    "level": 10
+  },
+  {
+    "kanji": "見学",
+    "furi": "けんがく",
+    "meaning": "Kunjungan belajar, Observasi",
+    "index": 55,
+    "level": 10
+  },
+  {
+    "kanji": "予報",
+    "furi": "よほう",
+    "meaning": "Ramalan, Prediksi",
+    "index": 56,
+    "level": 10
+  },
+  {
+    "kanji": "伝える",
+    "furi": "つたえる",
+    "meaning": "Menyampaikan, Memberi tahu",
+    "index": 57,
+    "level": 10
+  },
+  {
+    "kanji": "連絡",
+    "furi": "れんらく",
+    "meaning": "Kontak, Menghubungi",
+    "index": 58,
+    "level": 10
+  },
+  {
+    "kanji": "変更",
+    "furi": "へんこう",
+    "meaning": "Perubahan",
+    "index": 59,
+    "level": 10
+  },
+  {
+    "kanji": "下記",
+    "furi": "かき",
+    "meaning": "Berikut ini (yang tertulis di bawah)",
+    "index": 60,
+    "level": 10
+  },
+  {
+    "kanji": "ちょくせつ",
+    "furi": "ちょくせつ",
+    "meaning": "Langsung",
+    "index": 61,
+    "level": 10
+  },
+  {
+    "kanji": "用意",
+    "furi": "ようい",
+    "meaning": "Persiapan",
+    "index": 62,
+    "level": 10
+  },
+  {
+    "kanji": "空港",
+    "furi": "くうこう",
+    "meaning": "Bandara",
+    "index": 63,
+    "level": 10
+  },
+  {
+    "kanji": "効能",
+    "furi": "こうのう",
+    "meaning": "Khasiat, Efek",
+    "index": 64,
+    "level": 10
+  },
+  {
+    "kanji": "用法",
+    "furi": "ようほう",
+    "meaning": "Cara penggunaan, Dosis",
+    "index": 65,
+    "level": 10
+  },
+  {
+    "kanji": "容量",
+    "furi": "ようりょう",
+    "meaning": "Kapasitas, Isi",
+    "index": 66,
+    "level": 10
+  },
+  {
+    "kanji": "眠気",
+    "furi": "ねむけ",
+    "meaning": "Rasa kantuk",
+    "index": 67,
+    "level": 10
+  },
+  {
+    "kanji": "機械",
+    "furi": "きかい",
+    "meaning": "Mesin",
+    "index": 68,
+    "level": 10
+  },
+  {
+    "kanji": "操作",
+    "furi": "そうさ",
+    "meaning": "Pengoperasian, Mengendalikan",
+    "index": 69,
+    "level": 10
+  },
+  {
+    "kanji": "乾燥",
+    "furi": "かんそう",
+    "meaning": "Kering",
+    "index": 70,
+    "level": 10
+  },
+  {
+    "kanji": "1錠",
+    "furi": "いちじょう",
+    "meaning": "Satu tablet/pil",
+    "index": 71,
+    "level": 10
+  },
+  {
+    "kanji": "胃酸",
+    "furi": "いさん",
+    "meaning": "Asam lambung",
+    "index": 72,
+    "level": 10
+  },
+  {
+    "kanji": "限度",
+    "furi": "げんど",
+    "meaning": "Batas, Limit",
+    "index": 73,
+    "level": 10
+  }
 ]
