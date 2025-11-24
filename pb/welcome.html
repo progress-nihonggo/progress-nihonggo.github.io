@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id" oncontextmenu="return false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=480, height=240">
+    <title>PointBlank Gemscool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 480px;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+        
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.7) 100%);
+            z-index: 2;
+        }
+        
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .logo {
+            font-size: 42px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 
+                0 0 10px rgba(255, 69, 0, 0.8),
+                0 0 20px rgba(255, 69, 0, 0.6),
+                0 0 30px rgba(255, 69, 0, 0.4),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #FFD700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            font-weight: normal;
+            font-family: Arial, sans-serif;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        
+        .tagline {
+            font-size: 11px;
+            color: #ddd;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            font-weight: normal;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            max-width: 350px;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(255, 69, 0, 0.8),
+                    0 0 20px rgba(255, 69, 0, 0.6),
+                    0 0 30px rgba(255, 69, 0, 0.4),
+                    2px 2px 4px rgba(0, 0, 0, 0.8);
+            }
+            to {
+                text-shadow: 
+                    0 0 20px rgba(255, 69, 0, 1),
+                    0 0 30px rgba(255, 69, 0, 0.8),
+                    0 0 40px rgba(255, 69, 0, 0.6),
+                    2px 2px 4px rgba(0, 0, 0, 0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="https://pblatam1.com/assets/videos/pb.mp4" type="video/mp4">
+    </video>
+    
+    <div class="gradient-overlay"></div>
+    
+    <div class="content">
+        <div class="logo">POINTBLANK</div>
+        <div class="subtitle">GEMSCOOL</div>
+        <div class="tagline">
+            Masuki Arena Pertempuran Taktis<br>
+            Bergabunglah Bersama Jutaan Pemain
+        </div>
+    </div>
+</body>
+</html>
